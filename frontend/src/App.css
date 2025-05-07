@@ -1,0 +1,175 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url(auro.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.App {
+  text-align: center;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container,
+.register-container,
+.welcome-container {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.webcam {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 150, 200, 0.2);
+  border: 1px solid #b2f3ff;
+}
+
+
+.captured-image {
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: #ffffffdd;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 100, 150, 0.2);
+}
+
+.captured-image img {
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+}
+
+.capture-button {
+  background-color: #4CAF50;
+  color: white;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 300px;
+}
+
+input {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid #c2f0ff;
+  background: #08004daa;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  border-color: #60d3f5;
+  outline: none;
+  box-shadow: 0 0 5px #60d3f5aa;
+}
+
+button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  background: linear-gradient(to right, #4adede, #00b3ff);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(to right, #00b3ff, #4adede);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.login-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.register-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.back-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.logout-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.message {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.db-status {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+}
+
+.db-status.connected {
+  background-color: #4CAF50;
+}
+
+.db-status.disconnected {
+  background-color: #f44336;
+}
+
+.message.error {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.message.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+

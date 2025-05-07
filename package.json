@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
+    "express": "^5.1.0",
+    "face-api.js": "^0.22.2"
+  },
+  "name": "face-login",
+  "version": "1.0.0",
+  "description": "Sistema de autenticación que utiliza reconocimiento facial y Google Sign-in, desarrollado con FastAPI y React.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

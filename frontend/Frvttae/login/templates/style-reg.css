@@ -1,0 +1,162 @@
+/* Importar fuentes y Bootstrap Icons */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+
+/* Variables globales */
+:root {
+    --white: #ffffff;
+    --border-color: rgba(228, 228, 228, 0.2);
+    --box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    --transition: all 0.4s ease-in-out;
+}
+
+/* Reset general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('/img/auro.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    backdrop-filter: blur(4x);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Estilo del contenedor principal */
+.container {
+    width: 420px;
+    background: transparent;
+    border: 2px solid var(--border-color);
+    backdrop-filter: blur(5px);
+    color: var(--white);
+    padding: 30px 40px;
+    border-radius: 20px;
+}
+
+/* Título principal */
+.container h1 {
+    font-size: 39px;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 26px;
+    letter-spacing: 0.5px;
+}
+
+/* Registro social */
+.social-registrer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* Botón de Google (o similar) */
+.google-btn,
+.twitter-btn {
+    width: 48%;
+    height: 45px;
+    background: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: 40px;
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--white);
+    font-weight: 500;
+    line-height: 1;
+    transition: var(--transition);
+}
+
+.google-btn:hover {
+    transform: scale(1.05);
+}
+
+.twitter-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Íconos Bootstrap */
+i[class^="bi bi"] {
+    font-size: 24px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Inputs del formulario */
+.form-input {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 20px 0;
+}
+
+.form-input input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 2px solid rgba(228, 228, 228, 0.2);
+    color: var(--white);
+    font-size: 16px;
+    border-radius: 40px;
+    padding: 20px 45px 20px 20px;
+}
+
+.form-input input::placeholder {
+    color: var(--white);
+}
+
+svg{
+    position: absolute;
+    right: 10px;
+    top:37%;
+    transform: translate(-50%)
+}
+
+.container .btn{
+    width: 100%;
+    height: 45px;
+    background: rgba(81, 243, 255, 0.5);
+    opacity: 0.6;
+    border: 2px solid rgba(0, 26, 255, 0.2);
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    color:rgb(41, 45, 255);
+    font-weight: 550;
+    transition: all .4s ease-in-out;
+}
+
+.container .btn:hover{
+    transform: scale(1.05);
+}
+
+.login-link p a{
+    color:rgb(0, 156, 65);
+    text-decoration: none;
+    font-weight: 500;  
+}
+
+.login-link p a:hover{
+    text-decoration: underline;
+}
+
+.container .login-link{
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+@media only screen and (max-width: 520px) {
+    .container{
+        width: 90%;
+        padding: 30px 10px;
+    }
+}
