@@ -20,9 +20,9 @@ pip install -r requirements.txt
 
 2. Configurar las variables de entorno en el archivo `.env`:
 ```
-MONGO_URL=mongodb://localhost:27017
-SECRET_KEY=your-secret-key-change-this-in-production
-GOOGLE_CLIENT_ID=your-google-client-id
+MONGO_URL="mongodb+srv://SamuelDani:2003@cluster0.o0c70at.mongodb.net/"
+SECRET_KEY="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"
+GOOGLE_CLIENT_ID="826716563276-aevnjk67kjjpgq6kgp8jbvt840k43n8p.apps.googleusercontent.com"
 ```
 
 3. Iniciar el servidor backend:
@@ -44,7 +44,7 @@ npm install
 
 3. Crear un archivo `.env` en el directorio frontend:
 ```
-VITE_GOOGLE_CLIENT_ID=your-google-client-id
+VITE_GOOGLE_CLIENT_ID=826716563276-aevnjk67kjjpgq6kgp8jbvt840k43n8p.apps.googleusercontent.com
 ```
 
 4. Iniciar el servidor de desarrollo:
