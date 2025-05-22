@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+python-multipart
+motor
+python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]
+google-auth
+face-recognition
+Pillow
+numpy
+pydantic
+starlette
+aiofiles

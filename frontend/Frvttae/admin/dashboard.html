@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .main-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <h3 class="text-white text-center mb-4">Admin Panel</h3>
+                <nav>
+                    <a href="#" class="active" onclick="showUsers()">Usuarios</a>
+                    <a href="#" onclick="showAlbums()">Álbumes</a>
+                    <a href="#" onclick="logout()">Cerrar Sesión</a>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <div id="users-section">
+                    <h2>Gestión de Usuarios</h2>
+                    <button class="btn btn-primary mb-3" onclick="showAddUserModal()">Agregar Usuario</button>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Los usuarios se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="albums-section" style="display: none;">
+                    <h2>Gestión de Álbumes</h2>
+                    <button class="btn btn-primary mb-3" onclick="showAddAlbumModal()">Agregar Álbum</button>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Artista</th>
+                                <th>Año</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="albums-table-body">
+                            <!-- Los álbumes se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales para CRUD -->
+    <!-- Modal Usuario -->
+    <div class="modal fade" id="userModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <div class="mb-3">
+                            <label class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rol</label>
+                            <select class="form-control" id="role">
+                                <option value="normal">Normal</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveUser()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Álbum -->
+    <div class="modal fade" id="albumModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Álbum</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="albumForm">
+                        <div class="mb-3">
+                            <label class="form-label">Título</label>
+                            <input type="text" class="form-control" id="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Artista</label>
+                            <input type="text" class="form-control" id="artist" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Año</label>
+                            <input type="number" class="form-control" id="year" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAlbum()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Cargar datos al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUsers();
+            loadAlbums();
+        });
+
+        // Funciones de navegación
+        function showUsers() {
+            document.getElementById('users-section').style.display = 'block';
+            document.getElementById('albums-section').style.display = 'none';
+        }
+
+        function showAlbums() {
+            document.getElementById('users-section').style.display = 'none';
+            document.getElementById('albums-section').style.display = 'block';
+        }
+
+        // Funciones CRUD para usuarios y álbumes
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/users', {
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+                const users = await response.json();
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${user.role}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editUser('${user._id}')">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser('${user._id}')">Eliminar</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error al cargar usuarios:', error);
+            }
+        }
+
+        async function loadAlbums() {
+            try {
+                const response = await fetch('/api/albums', {
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+                const albums = await response.json();
+                const tbody = document.getElementById('albums-table-body');
+                tbody.innerHTML = albums.map(album => `
+                    <tr>
+                        <td>${album.title}</td>
+                        <td>${album.artist}</td>
+                        <td>${album.year}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editAlbum('${album._id}')">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteAlbum('${album._id}')">Eliminar</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error al cargar álbumes:', error);
+            }
+        }
+    </script>
+</body>
+</html>

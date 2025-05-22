@@ -7,7 +7,12 @@ import './components/UserManagement.css';
 
 const checkDatabaseConnection = async () => {
   try {
-    const response = await fetch('http://localhost:8000/health');
+    const response = await fetch('http://localhost:8000/health', {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
     const data = await response.json();
     return data.status === 'connected';
   } catch (error) {
@@ -21,6 +26,7 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('normal');
   const [isRegistering, setIsRegistering] = useState(false);
   const [dbConnected, setDbConnected] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
@@ -92,7 +98,17 @@ function App() {
       if (response.ok) {
         setMessage('Inicio de sesión exitoso!');
         setIsLoggedIn(true);
-        window.location.href = '/Frvttae/albumes.html'; // Redirigir a la carpeta Frvttae dentro de frontend
+        if (data.role === 'admin') {
+          window.location.href = '/admin/dashboard';
+        } else {
+          window.location.href = '/reproductor';
+        }
+        // Redirigir según el rol del usuario
+        if (data.role === 'admin') {
+          window.location.href = '/admin/dashboard';
+        } else {
+          window.location.href = '/reproductor';
+        }
       } else {
         setMessage(typeof data.detail === 'string' ? data.detail : 'Error en el inicio de sesión');
       }
@@ -115,7 +131,12 @@ const handleGoogleSuccess = async (credentialResponse) => {
       if (response.ok) {
         setMessage('Inicio de sesión con Google exitoso!');
         setIsLoggedIn(true);
-        window.location.href = '/Frvttae/albumes.html'; // Redirigir a la carpeta Frvttae dentro de frontend
+        // Redirigir según el rol del usuario
+        if (data.role === 'admin') {
+          window.location.href = '/admin/dashboard';
+        } else {
+          window.location.href = '/reproductor';
+        }
       } else {
         setMessage(typeof data.detail === 'string' ? data.detail : 'Error en el inicio de sesión con Google');
       }
@@ -144,6 +165,7 @@ const handleGoogleSuccess = async (credentialResponse) => {
     formData.append('username', username);
     formData.append('password', password);
     formData.append('email', email);
+    formData.append('role', role);
     
     // Procesar la imagen para asegurar formato correcto
     const processedImage = processImage(capturedImage);
@@ -247,7 +269,7 @@ const handleGoogleSuccess = async (credentialResponse) => {
                 clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
                 onSuccess={handleGoogleSuccess}
                 onError={() => setMessage('Error al iniciar sesión con Google')}
-                redirectUri="http://localhost:5174"
+                redirectUri="http://localhost:5173"
               />
               <button
                 onClick={() => setIsRegistering(true)}
@@ -311,6 +333,15 @@ const handleGoogleSuccess = async (credentialResponse) => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  style={{ margin: '10px 0' }}
+                  required
+                >
+                  <option value="normal">Usuario Normal</option>
+                  <option value="admin">Administrador</option>
+                </select>
                 <button type="submit" className="register-button">
                   Completar Registro
                 </button>
@@ -327,7 +358,8 @@ const handleGoogleSuccess = async (credentialResponse) => {
       ) : (
         <div className="welcome-container">
           <h2>¡Bienvenido!</h2>
-          <UserManagement />
+          {/* Solo mostrar UserManagement si el usuario es admin */}
+          {role === 'admin' && <UserManagement />}
           <button
             onClick={() => {
               setIsLoggedIn(false);

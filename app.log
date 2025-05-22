@@ -1,0 +1,292 @@
+2025-05-21 16:18:36,191 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 16:18:42,936 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 16:18:43,025 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 16:18:43,027 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 16:18:44,295 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 16:18:44,406 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 111.03ms
+2025-05-21 16:18:44,406 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 16:18:44,901 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 604.74ms
+2025-05-21 16:18:53,409 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:18:53,501 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 91.73ms
+2025-05-21 16:18:53,609 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 92.55ms
+2025-05-21 16:19:22,813 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:19:22,925 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 101.95ms
+2025-05-21 16:19:23,031 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 106.95ms
+2025-05-21 16:19:38,971 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:19:39,118 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 103.01ms
+2025-05-21 16:19:39,227 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 109.01ms
+2025-05-21 16:19:39,344 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:19:39,455 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 108.62ms
+2025-05-21 16:19:39,553 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 109.62ms
+2025-05-21 16:19:53,427 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\USER\AppData\Roaming\Python\Python312\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-21 16:31:05,443 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 16:31:05,535 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 16:31:05,589 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 16:31:10,718 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 16:31:22,655 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 16:31:22,796 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 16:31:22,801 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 16:31:24,021 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 16:31:24,120 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 91.07ms
+2025-05-21 16:31:24,121 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 16:31:24,220 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:31:24,316 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 95.61ms
+2025-05-21 16:31:24,415 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 96.60ms
+2025-05-21 16:31:24,428 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:31:24,521 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 92.76ms
+2025-05-21 16:31:24,618 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 93.76ms
+2025-05-21 16:31:24,671 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 641.89ms
+2025-05-21 16:31:27,625 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 16:31:43,228 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 16:31:43,402 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 16:31:43,437 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 16:31:44,237 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:31:44,333 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 94.79ms
+2025-05-21 16:31:44,432 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 95.74ms
+2025-05-21 16:31:44,757 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 16:31:44,856 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 98.26ms
+2025-05-21 16:31:44,857 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 16:31:45,410 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 651.43ms
+2025-05-21 16:32:13,803 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:32:13,905 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 101.08ms
+2025-05-21 16:32:14,007 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 105.14ms
+2025-05-21 16:32:44,125 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:32:44,737 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 608.91ms
+2025-05-21 16:32:44,840 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 615.96ms
+2025-05-21 16:32:52,196 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:32:52,291 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 94.81ms
+2025-05-21 16:32:52,387 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 95.81ms
+2025-05-21 16:32:52,407 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:32:52,510 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 103.82ms
+2025-05-21 16:32:52,617 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 106.82ms
+2025-05-21 16:33:10,266 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\USER\AppData\Roaming\Python\Python312\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-21 16:46:37,326 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 16:46:37,423 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 96.48ms
+2025-05-21 16:46:37,519 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 96.48ms
+2025-05-21 17:00:37,593 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 17:00:37,699 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 104.80ms
+2025-05-21 17:00:37,797 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 105.80ms
+2025-05-21 17:00:37,811 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 17:00:37,917 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 105.87ms
+2025-05-21 17:00:38,026 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 119.71ms
+2025-05-21 17:01:08,233 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 17:01:08,870 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 635.62ms
+2025-05-21 17:01:08,980 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 636.55ms
+2025-05-21 18:11:43,689 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:11:50,150 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:11:50,271 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:11:50,272 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:11:52,678 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:11:52,838 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 150.91ms
+2025-05-21 18:11:52,840 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:11:53,649 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 969.39ms
+2025-05-21 18:15:29,300 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:15:29,559 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 241.92ms
+2025-05-21 18:15:29,721 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 249.84ms
+2025-05-21 18:15:29,830 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:15:29,966 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 134.93ms
+2025-05-21 18:15:30,120 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 145.49ms
+2025-05-21 18:15:58,930 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:15:59,098 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 158.53ms
+2025-05-21 18:15:59,256 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 159.53ms
+2025-05-21 18:16:29,544 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:16:30,436 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 889.16ms
+2025-05-21 18:16:30,616 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 900.53ms
+2025-05-21 18:16:52,928 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\USER\AppData\Roaming\Python\Python312\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-05-21 18:20:58,675 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:21:00,210 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:21:00,211 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:21:02,059 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:21:14,102 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:21:14,199 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:21:14,202 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:21:16,109 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:21:16,227 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 116.63ms
+2025-05-21 18:21:16,227 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:21:17,093 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 982.65ms
+2025-05-21 18:25:31,888 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:25:32,263 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:25:32,264 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:25:33,920 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:25:42,849 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:25:42,943 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:25:42,943 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:25:46,438 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:25:46,590 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 142.38ms
+2025-05-21 18:25:46,590 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:25:47,560 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 1113.04ms
+2025-05-21 18:29:40,300 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:29:40,459 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:29:40,460 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:29:42,365 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:29:53,662 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:29:53,784 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:29:53,790 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:29:56,566 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:29:56,831 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 263.16ms
+2025-05-21 18:29:56,832 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:29:57,623 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 1054.50ms
+2025-05-21 18:32:27,875 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:32:28,043 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 167.02ms
+2025-05-21 18:32:28,211 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 169.03ms
+2025-05-21 18:33:10,537 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:33:10,816 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 271.64ms
+2025-05-21 18:33:11,024 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 272.64ms
+2025-05-21 18:33:40,866 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:33:41,013 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 147.02ms
+2025-05-21 18:33:41,162 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 147.02ms
+2025-05-21 18:34:10,538 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:34:10,706 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 168.15ms
+2025-05-21 18:34:10,847 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 168.15ms
+2025-05-21 18:34:33,450 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:34:33,564 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:34:33,564 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:34:35,170 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:34:45,599 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:34:45,679 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:34:45,680 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:34:48,029 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:34:48,194 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 164.61ms
+2025-05-21 18:34:48,195 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:34:48,372 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:34:48,527 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 154.79ms
+2025-05-21 18:34:48,711 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 156.31ms
+2025-05-21 18:34:48,988 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 957.56ms
+2025-05-21 18:36:23,622 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:36:23,784 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:36:23,785 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:36:26,368 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:36:35,397 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173']
+2025-05-21 18:36:35,496 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:36:35,497 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:36:37,847 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:36:38,046 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 195.21ms
+2025-05-21 18:36:38,047 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:36:39,039 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 1187.69ms
+2025-05-21 18:36:44,724 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:36:44,975 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:36:44,978 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:36:46,589 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:36:57,211 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:36:57,321 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:36:57,323 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:37:00,305 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:37:00,502 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 190.65ms
+2025-05-21 18:37:00,503 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:37:01,585 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 1273.29ms
+2025-05-21 18:40:51,553 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:40:51,701 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:40:51,702 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:40:53,346 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:41:09,030 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:41:09,147 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:41:09,155 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:41:11,060 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:41:11,204 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 143.24ms
+2025-05-21 18:41:11,205 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:41:11,887 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 825.84ms
+2025-05-21 18:42:21,949 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:42:22,146 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:42:22,152 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:42:24,003 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:42:32,925 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:42:33,020 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:42:33,021 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:42:34,613 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:42:34,736 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 121.75ms
+2025-05-21 18:42:34,736 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:42:35,434 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 820.21ms
+2025-05-21 18:43:47,118 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:43:47,251 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:43:47,251 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:43:50,432 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:44:12,947 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:44:13,060 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:44:13,061 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:44:14,729 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:44:14,864 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 133.49ms
+2025-05-21 18:44:14,865 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:44:15,625 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 895.28ms
+2025-05-21 18:51:08,535 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:51:08,663 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 127.99ms
+2025-05-21 18:51:08,789 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 128.99ms
+2025-05-21 18:51:38,860 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:51:39,827 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 965.52ms
+2025-05-21 18:51:40,048 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 965.52ms
+2025-05-21 18:52:08,535 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:52:08,672 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 136.52ms
+2025-05-21 18:52:08,838 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 139.52ms
+2025-05-21 18:52:38,850 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:52:40,089 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 1237.49ms
+2025-05-21 18:52:40,230 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 1238.49ms
+2025-05-21 18:53:08,527 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:53:08,676 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 148.00ms
+2025-05-21 18:53:08,814 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 149.00ms
+2025-05-21 18:53:13,936 - main - INFO - Cerrando conexión a MongoDB...
+2025-05-21 18:53:14,123 - database - INFO - Conexión a MongoDB cerrada
+2025-05-21 18:53:14,124 - main - INFO - Conexión a MongoDB cerrada correctamente
+2025-05-21 18:53:18,599 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-05-21 18:53:28,299 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-05-21 18:53:28,396 - main - INFO - Inicializando conexión a MongoDB...
+2025-05-21 18:53:28,408 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-05-21 18:53:30,311 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-05-21 18:53:30,437 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 120.90ms
+2025-05-21 18:53:30,437 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-05-21 18:53:31,157 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 840.63ms
+2025-05-21 18:53:40,175 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:53:40,310 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 133.14ms
+2025-05-21 18:53:40,446 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 133.14ms
+2025-05-21 18:53:40,458 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:53:40,590 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 131.65ms
+2025-05-21 18:53:40,746 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 132.52ms
+2025-05-21 18:54:25,564 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:54:25,723 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 153.68ms
+2025-05-21 18:54:25,884 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 155.68ms
+2025-05-21 18:54:26,217 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:54:26,422 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 164.00ms
+2025-05-21 18:54:26,608 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 196.00ms
+2025-05-21 18:54:55,855 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:54:56,207 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 350.92ms
+2025-05-21 18:54:56,501 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 351.75ms
+2025-05-21 18:55:25,534 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:55:25,728 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 193.78ms
+2025-05-21 18:55:25,965 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 194.78ms
+2025-05-21 18:55:55,855 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:55:56,166 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 310.92ms
+2025-05-21 18:55:56,460 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 311.94ms
+2025-05-21 18:56:25,539 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:56:25,924 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 382.50ms
+2025-05-21 18:56:26,203 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 383.26ms
+2025-05-21 18:56:55,863 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:56:56,337 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 473.77ms
+2025-05-21 18:56:57,003 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 539.24ms
+2025-05-21 18:57:25,238 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:57:25,426 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 188.21ms
+2025-05-21 18:57:25,614 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 188.72ms
+2025-05-21 18:57:55,546 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:57:55,734 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 187.54ms
+2025-05-21 18:57:55,927 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 188.54ms
+2025-05-21 18:58:25,238 - main - INFO - Verificando conexión a MongoDB...
+2025-05-21 18:58:25,403 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 163.80ms
+2025-05-21 18:58:25,686 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 164.97ms
+2025-05-21 18:58:31,546 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\USER\AppData\Roaming\Python\Python312\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
