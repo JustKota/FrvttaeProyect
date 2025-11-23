@@ -156,8 +156,21 @@ const handleGoogleSuccess = async (credentialResponse) => {
   };
 
   const handleRegister = async () => {
+    // Validaciones de cliente para evitar 422 por reglas del backend
     if (!capturedImage) {
       setMessage('Por favor, capture una foto antes de registrarse.');
+      return;
+    }
+    if (!username || username.trim().length < 3) {
+      setMessage('El nombre de usuario debe tener al menos 3 caracteres.');
+      return;
+    }
+    if (!password || password.length < 8) {
+      setMessage('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+    if (!email || !email.trim()) {
+      setMessage('Por favor, ingrese su email.');
       return;
     }
 
@@ -180,6 +193,23 @@ const handleGoogleSuccess = async (credentialResponse) => {
     const blob = new Blob([ab], { type: mimeString });
     formData.append('face_image', blob, 'face.jpg');
 
+    // Helper para mostrar errores de validación de FastAPI (422)
+    const parseValidationErrors = (detail) => {
+      try {
+        if (Array.isArray(detail)) {
+          return detail.map((err) => {
+            const loc = err.loc || [];
+            const field = loc[loc.length - 1] || 'campo';
+            const msg = err.msg || err.message || 'Error de validación';
+            return `${field}: ${msg}`;
+          }).join('. ');
+        }
+        return typeof detail === 'string' ? detail : 'Error en el envío de datos';
+      } catch (e) {
+        return 'Error de validación';
+      }
+    };
+
     try {
       const response = await fetch('http://localhost:8000/register', {
         method: 'POST',
@@ -193,9 +223,15 @@ const handleGoogleSuccess = async (credentialResponse) => {
         setPassword('');
         setEmail('');
       } else {
-        setMessage(typeof data.detail === 'string' ? data.detail : 'Error en el registro. Por favor, inténtelo de nuevo.');
+        if (response.status === 422) {
+          console.warn('Errores de validación (422):', data);
+          setMessage(parseValidationErrors(data.detail));
+        } else {
+          setMessage(typeof data.detail === 'string' ? data.detail : 'Error en el registro. Por favor, inténtelo de nuevo.');
+        }
       }
     } catch (error) {
+      console.error('Error al registrar:', error);
       setMessage(typeof error.message === 'string' ? error.message : 'Error al conectar con el servidor');
     }
   };

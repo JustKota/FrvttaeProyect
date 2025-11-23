@@ -16,7 +16,7 @@
 
 .user-management {
     min-height: 90vh;
-    background: url('/img/gladesauro.jpg') center / cover;
+    background: url('') center / cover;
     display: flex;
     flex-direction: column;
     justify-content: center;

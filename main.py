@@ -89,8 +89,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=frontend_origins,  # Usar la lista de orígenes configurada
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],  # Métodos específicos permitidos
-    allow_headers=["Authorization", "Content-Type"],  # Headers específicos permitidos
+    allow_methods=["*"],  # Permitir todos los métodos
+    allow_headers=["*"],  # Permitir todas las cabeceras
     expose_headers=["*"],  # Headers expuestos al navegador
     max_age=3600  # Tiempo de caché para preflight requests
 )
@@ -185,6 +185,12 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: str
     face_encoding: Optional[list] = None
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    role: Optional[UserRole] = None
+    password: Optional[str] = None
 
 class Token(BaseModel):
     access_token: str
@@ -394,8 +400,26 @@ async def system_diagnostics(current_user = Depends(get_current_admin)):
 # Rutas protegidas para administradores
 @app.get("/api/users")
 async def get_users(current_user = Depends(get_current_admin)):
-    users = await db.usuarios.find().to_list(length=None)
-    return users
+    try:
+        users = await db.usuarios.find().to_list(length=None)
+        # Convertir ObjectId a string para serialización JSON
+        for user in users:
+            if '_id' in user:
+                user['id'] = str(user['_id'])
+                del user['_id']
+            # Eliminar face_encoding para reducir el tamaño de la respuesta
+            if 'face_encoding' in user:
+                del user['face_encoding']
+            # Eliminar face_image para reducir el tamaño de la respuesta
+            if 'face_image' in user:
+                del user['face_image']
+            # Eliminar password por seguridad
+            if 'password' in user:
+                del user['password']
+        return users
+    except Exception as e:
+        logger.error(f"Error al obtener usuarios: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error al obtener usuarios: {str(e)}")
 
 @app.post("/api/users")
 async def create_user(user: UserCreate, current_user = Depends(get_current_admin)):
@@ -426,7 +450,6 @@ async def delete_user(user_id: str, current_user = Depends(get_current_admin)):
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return {"message": "Usuario eliminado"}
 
-# Rutas protegidas para álbumes
 @app.get("/api/albums")
 async def get_albums(current_user = Depends(get_current_user)):
     albums = await db.albums.find().to_list(length=None)
@@ -462,11 +485,19 @@ async def register_user(
     username: str = Form(..., min_length=3, max_length=50),
     password: str = Form(..., min_length=8),
     email: str = Form(...),
-    role: UserRole = Form(default=UserRole.NORMAL),
+    role: str = Form(default="normal"),  # Cambiado a str para aceptar el valor del frontend
     face_image: UploadFile = File(...)
 ):
-    logger.info(f"Intentando registrar usuario: {username}, email: {email}, filename imagen: {face_image.filename}")
+    logger.info(f"Intentando registrar usuario: {username}, email: {email}, filename imagen: {face_image.filename}, role: {role}")
     
+    # Validar y convertir el rol
+    try:
+        role = UserRole(role.lower())  # Convertir a minúsculas y validar contra el enum
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Rol no válido. Debe ser 'normal' o 'admin'"
+        )
     # Validar el formato de la imagen
     content_type = face_image.content_type
     allowed_types = ['image/jpeg', 'image/png']
@@ -732,15 +763,29 @@ async def google_login(token_data: dict):
 # CRUD operations
 @app.get("/users")
 async def get_users():
-    users = await db.usuarios.find().to_list(length=None)
-    # Convertir ObjectId a string para serialización JSON
-    for user in users:
-        if '_id' in user:
-            user['_id'] = str(user['_id'])
-        # Convertir face_encoding a lista si existe
-        if 'face_encoding' in user and user['face_encoding'] is not None:
-            user['face_encoding'] = user['face_encoding'] if isinstance(user['face_encoding'], list) else user['face_encoding'].tolist()
-    return users
+    try:
+        users = await db.usuarios.find().to_list(length=None)
+        # Convertir ObjectId a string para serialización JSON
+        for user in users:
+            if '_id' in user:
+                user['id'] = str(user['_id'])
+                del user['_id']
+            # Eliminar face_encoding para reducir el tamaño de la respuesta
+            if 'face_encoding' in user:
+                del user['face_encoding']
+            # Eliminar face_image para reducir el tamaño de la respuesta
+            if 'face_image' in user:
+                del user['face_image']
+            # Eliminar password por seguridad
+            if 'password' in user:
+                del user['password']
+        return users
+    except Exception as e:
+        logger.error(f"Error al obtener usuarios: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al obtener usuarios: {str(e)}"
+        )
 
 @app.get("/users/{username}")
 async def get_user_by_username(username: str):
@@ -750,14 +795,19 @@ async def get_user_by_username(username: str):
     return user
 
 @app.put("/users/{username}")
-async def update_user(username: str, user: UserBase):
+async def update_user(username: str, user: UserUpdate):
     existing_user = await get_user(username)
     if existing_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    
+
+    update_fields = user.dict(exclude_unset=True)
+    # Si se proporciona una nueva contraseña, hashearla antes de guardar
+    if "password" in update_fields and update_fields["password"]:
+        update_fields["password"] = get_password_hash(update_fields["password"])
+
     await db.usuarios.update_one(
         {"username": username},
-        {"$set": user.dict(exclude_unset=True)}
+        {"$set": update_fields}
     )
     return {"message": "User updated successfully"}
 

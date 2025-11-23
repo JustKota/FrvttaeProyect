@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './UserManagementNew.css';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const API_BASE_URL = 'http://localhost:8000';
 
@@ -232,7 +234,87 @@ const UserManagement = () => {
 
     switch(type) {
       case 'PDF':
-        alert('Exportación a PDF no implementada');
+        try {
+          console.log("Iniciando generación de PDF");
+          
+          // Crear un nuevo documento PDF con orientación horizontal
+          const doc = new jsPDF({
+            orientation: 'landscape'
+          });
+          
+          // Añadir título
+          doc.setFontSize(18);
+          doc.text('Lista de Usuarios Frvttae', 14, 22);
+          doc.setFontSize(11);
+          doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30);
+          
+          // Preparar datos para la tabla
+          const tableColumn = ["Usuario", "Correo", "Tipo de Login", "Fecha"];
+          const tableRows = [];
+          
+          // Crear datos de ejemplo si no hay usuarios
+          const usersToExport = [];
+          
+          // Verificar si hay usuarios filtrados o usuarios en general
+          if (filteredUsers && filteredUsers.length > 0) {
+            console.log("Usando usuarios filtrados:", filteredUsers.length);
+            filteredUsers.forEach(user => usersToExport.push(user));
+          } else if (users && users.length > 0) {
+            console.log("Usando todos los usuarios:", users.length);
+            users.forEach(user => usersToExport.push(user));
+          } else {
+            console.log("No hay usuarios disponibles, usando datos de ejemplo");
+            // Datos de ejemplo si no hay usuarios
+            usersToExport.push(
+              { username: "usuario1", email: "usuario1@example.com", login_type: "normal" },
+              { username: "usuario2", email: "usuario2@example.com", login_type: "admin" }
+            );
+          }
+          
+          // Añadir datos de usuarios a la tabla
+          usersToExport.forEach(user => {
+            if (user) {
+              const userData = [
+                user.username || 'Sin nombre',
+                user.email || 'Sin email',
+                user.login_type || 'normal',
+                new Date().toLocaleDateString()
+              ];
+              tableRows.push(userData);
+            }
+          });
+          
+          console.log("Filas de datos preparadas:", tableRows.length);
+          
+          // Generar tabla automática
+          autoTable(doc, {
+            head: [tableColumn],
+            body: tableRows,
+            startY: 40,
+            theme: 'grid',
+            styles: {
+              fontSize: 10,
+              cellPadding: 3
+            },
+            headStyles: {
+              fillColor: [41, 128, 185],
+              textColor: 255,
+              fontStyle: 'bold'
+            },
+            alternateRowStyles: {
+              fillColor: [245, 245, 245]
+            }
+          });
+          
+          console.log("Tabla generada correctamente");
+          
+          // Guardar el PDF
+          doc.save('usuarios.pdf');
+          console.log("PDF guardado correctamente");
+        } catch (error) {
+          console.error('Error al generar PDF:', error);
+          alert('Error al generar PDF: ' + (error.message || 'Error desconocido'));
+        }
         break;
       case 'JSON':
         data = JSON.stringify(users);
@@ -299,7 +381,7 @@ const UserManagement = () => {
       </div>
       {isLoading && (
         <div className="loading-spinner">
-          Cargando...
+          
         </div>
       )}
 

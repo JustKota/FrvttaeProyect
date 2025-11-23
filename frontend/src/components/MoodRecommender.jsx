@@ -1,100 +1,85 @@
 import React, { useState } from 'react';
 import '../styles.css';
 
-function MoodRecommender({ onSelectSongs }) {
+function MoodRecommender({ onSelectSongs, sourceSongs = [] }) {
   const [selectedMood, setSelectedMood] = useState(null);
-  
-  const moodRecommendations = {
-    feliz: [
-      { title: "Happy", name: "Mitski", from: "/music/puberty_2/01.mp3" },
-      { title: "My Body's Made of Crushed Little Stars", name: "Mitski", from: "/music/puberty_2/07.mp3" },
-      { title: "Isle Into Thyself", name: "Miracle Musical", from: "/music/hawaii/02.mp3" },
-    ],
-    triste: [
-      { title: "I Bet on Losing Dogs", name: "Mitski", from: "/music/puberty_2/06.mp3" },
-      { title: "A Burning Hill", name: "Mitski", from: "/music/puberty_2/10.mp3" },
-      { title: "Murders", name: "Miracle Musical", from: "/music/hawaii/05.mp3" },
-    ],
-    energico: [
-      { title: "Slvtcrvsher", name: "Sewerslvt", from: "/music/ss/09.mp3" },
-      { title: "The Mind Electric", name: "Miracle Musical", from: "/music/hawaii/07.mp3" },
-      { title: "Your Best American Girl", name: "Mitski", from: "/music/puberty_2/05.mp3" },
-    ],
-    relajado: [
-      { title: "Stranded Lullaby", name: "Miracle Musical", from: "/music/hawaii/10.mp3" },
-      { title: "Dream Sweet In Sea Major", name: "Miracle Musical", from: "/music/hawaii/11.mp3" },
-      { title: "Once More to See You", name: "Mitski", from: "/music/puberty_2/03.mp3" },
-    ],
-    melancolico: [
-      { title: "I Break My Heart & Yours", name: "Sewerslvt", from: "/music/ss/02.mp3" },
-      { title: "With You Forever", name: "Sewerslvt", from: "/music/ss/14.mp3" },
-      { title: "Crack Baby", name: "Mitski", from: "/music/puberty_2/11.mp3" },
-    ]
+  const [currentSong, setCurrentSong] = useState(null);
+
+  const getSongsByMood = (mood) => {
+    return sourceSongs.filter(s => (s.mood || '').toLowerCase() === mood);
   };
 
-  const [currentSong, setCurrentSong] = useState(null);
-  
   const handleMoodSelect = (mood) => {
     setSelectedMood(mood);
-    if (moodRecommendations[mood]) {
-      onSelectSongs(moodRecommendations[mood]);
-      setCurrentSong(moodRecommendations[mood][0]); // selecciona la primera canción
+    const moodSongs = getSongsByMood(mood);
+    if (moodSongs.length > 0) {
+      // Pasar las canciones filtradas pero no reemplazar el playlist completo
+      onSelectSongs(moodSongs);
+      setCurrentSong(moodSongs[0]);
+    } else {
+      // Si no hay canciones analizadas para ese mood, mostrar mensaje
+      setCurrentSong(null);
+      alert(`No hay canciones disponibles para el estado de ánimo "${mood}". Sube más canciones para obtener recomendaciones.`);
     }
   };
-  
 
   return (
     <div className="mood-recommender">
       <h2>¿Cómo te sientes hoy?</h2>
+      <p>Selecciona tu estado de ánimo para encontrar canciones que coincidan:</p>
+      
       <div className="mood-buttons">
         <button 
           className={`mood-btn ${selectedMood === 'feliz' ? 'active' : ''}`} 
           onClick={() => handleMoodSelect('feliz')}
         >
-          😊 Feliz
+          😊 Feliz ({getSongsByMood('feliz').length})
         </button>
         <button 
           className={`mood-btn ${selectedMood === 'triste' ? 'active' : ''}`} 
           onClick={() => handleMoodSelect('triste')}
         >
-          😢 Triste
+          😢 Triste ({getSongsByMood('triste').length})
         </button>
         <button 
           className={`mood-btn ${selectedMood === 'energico' ? 'active' : ''}`} 
           onClick={() => handleMoodSelect('energico')}
         >
-          ⚡ Enérgico
+          ⚡ Enérgico ({getSongsByMood('energico').length})
         </button>
         <button 
           className={`mood-btn ${selectedMood === 'relajado' ? 'active' : ''}`} 
           onClick={() => handleMoodSelect('relajado')}
         >
-          😌 Relajado
+          😌 Relajado ({getSongsByMood('relajado').length})
         </button>
         <button 
           className={`mood-btn ${selectedMood === 'melancolico' ? 'active' : ''}`} 
           onClick={() => handleMoodSelect('melancolico')}
         >
-          🌧️ Melancólico
+          🌧️ Melancólico ({getSongsByMood('melancolico').length})
         </button>
       </div>
 
       {currentSong && (
-  <div className="audio-player">
-    <h4>Reproduciendo: {currentSong.title} - {currentSong.name}</h4>
-  </div>
-)}
-      
-      {selectedMood && (
+        <div className="audio-player">
+          <h4>Reproduciendo: {currentSong.title} - {currentSong.name}</h4>
+          <p>Estado de ánimo detectado: <strong>{currentSong.mood}</strong></p>
+        </div>
+      )}
+
+      {selectedMood && getSongsByMood(selectedMood).length > 0 && (
         <div className="recommendations">
-          <h3>Recomendaciones para tu estado de ánimo:</h3>
+          <h3>Canciones {selectedMood}s encontradas:</h3>
           <ul>
-            {moodRecommendations[selectedMood].map((song, index) => (
+            {getSongsByMood(selectedMood).map((song, index) => (
               <li key={index}>
-                {song.title} - {song.name}
+                <strong>{song.title}</strong> - {song.name}
+                <span className="mood-tag"> ({song.mood})</span>
               </li>
             ))}
           </ul>
+          <p><em>Nota: Tus canciones originales siguen en el playlist principal.</em></p>
         </div>
       )}
     </div>

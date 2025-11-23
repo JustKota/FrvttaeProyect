@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import './styles.css';
 import MoodRecommender from './components/MoodRecommender';
 import Albums from './components/Albums';
+import { saveAudio, getAudio } from './services/audioStore';
 
 function App() {
   const location = useLocation();
@@ -15,6 +16,7 @@ function App() {
   const [duration, setDuration] = useState(0);
   const [showMoodRecommender, setShowMoodRecommender] = useState(false);
   const [showAlbums, setShowAlbums] = useState(false);
+  const [filterMood, setFilterMood] = useState(null);
 
   const audioRef = useRef(null);
   const progressRef = useRef(null);
@@ -66,21 +68,96 @@ function App() {
     ],
   };
 
-  // Cargar álbum desde localStorage o desde el estado de navegación
+  // Cargar canciones guardadas y álbum desde almacenamiento persistente (deduplicado)
   useEffect(() => {
-    // Verificar si hay un álbum seleccionado en el estado de navegación
-    if (location.state && location.state.selectedAlbum && albums[location.state.selectedAlbum]) {
-      setSongs([...albums[location.state.selectedAlbum]]);
-      localStorage.setItem('albumToPlay', location.state.selectedAlbum);
-      return;
-    }
-    
-    // Si no hay estado de navegación, intentar cargar desde localStorage
-    const albumId = localStorage.getItem('albumToPlay');
-    if (albumId && albums[albumId]) {
-      setSongs([...albums[albumId]]);
-    }
+    const init = async () => {
+      const initial = [];
+
+      // 1) Album seleccionado via navegación o almacenado
+      let selectedAlbum = null;
+      if (location.state && location.state.selectedAlbum && albums[location.state.selectedAlbum]) {
+        selectedAlbum = location.state.selectedAlbum;
+        localStorage.setItem('albumToPlay', selectedAlbum);
+      } else {
+        const albumId = localStorage.getItem('albumToPlay');
+        if (albumId && albums[albumId]) {
+          selectedAlbum = albumId;
+        }
+      }
+      if (selectedAlbum) {
+        // Añadir canciones del álbum evitando duplicados por "from"
+        const albumSongs = albums[selectedAlbum];
+        const seenFrom = new Set();
+        for (const s of albumSongs) {
+          if (!seenFrom.has(s.from)) {
+            seenFrom.add(s.from);
+            initial.push({ ...s });
+          }
+        }
+      }
+
+      // 2) Restaurar canciones locales desde IndexedDB usando metadatos
+      const savedMetaRaw = localStorage.getItem('userSongsMeta');
+      if (savedMetaRaw) {
+        try {
+          const metas = JSON.parse(savedMetaRaw);
+          const seenIds = new Set();
+          for (const meta of metas) {
+            if (!meta?.id || seenIds.has(meta.id)) continue;
+            seenIds.add(meta.id);
+            try {
+              const blob = await getAudio(meta.id);
+              if (!blob) continue;
+              const url = URL.createObjectURL(blob);
+              // Re-analizar para recuperar métricas y mejorar clasificación dinámica
+              let analysis = null;
+              try {
+                analysis = await analyzeSongMood(blob);
+              } catch {}
+              initial.push({
+                title: meta.title,
+                name: 'Local Frvttae',
+                from: url,
+                mood: (analysis && analysis.mood) || meta.mood || 'relajado',
+                type: meta.type || blob.type,
+                id: meta.id,
+                _analysis: analysis || undefined
+              });
+            } catch (err) {
+              console.warn('No se pudo restaurar audio', meta.id, err);
+            }
+          }
+        } catch (error) {
+          console.error('Error al cargar metadatos guardados:', error);
+        }
+      }
+
+      // 3) Establecer canciones con recategorización dinámica
+      const categorized = recategorizeSongsDynamically(initial);
+      setSongs(categorized);
+    };
+    init();
   }, [location.state]);
+
+  // Guardar metadatos de canciones del usuario en localStorage (no blobs) con deduplicación
+  useEffect(() => {
+    const userSongs = songs.filter(song => song.name === 'Local Frvttae');
+    if (userSongs.length > 0) {
+      const metasMap = new Map();
+      for (const s of userSongs) {
+        if (!s.id) continue;
+        if (!metasMap.has(s.id)) {
+          metasMap.set(s.id, { id: s.id, title: s.title, mood: s.mood, type: s.type });
+        }
+      }
+      const metas = Array.from(metasMap.values());
+      try {
+        localStorage.setItem('userSongsMeta', JSON.stringify(metas));
+      } catch (err) {
+        console.error('No se pudieron guardar metadatos en localStorage:', err);
+      }
+    }
+  }, [songs]);
 
   // Actualizar información de la canción cuando cambia
   useEffect(() => {
@@ -222,19 +299,252 @@ function App() {
     setIsPlaying(true);
   };
 
-  const handleMusicUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const newSongs = files.map(file => {
-      const url = URL.createObjectURL(file);
-      const arcName = file.name.replace(/\.[^/.]+$/, "");
-      return {
-        title: arcName,
-        name: 'Local Frvttae',
-        from: url
-      };
-    });
+  // Analizador de estado de ánimo mejorado usando Web Audio API
+  async function analyzeSongMood(file) {
+      try {
+          const arrayBuffer = await file.arrayBuffer();
+          const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100 * 30, 44100);
+          const audioData = await audioContext.decodeAudioData(arrayBuffer);
+          const channelData = audioData.getChannelData(0);
+          
+          // Analizar solo los primeros 30 segundos para mejor rendimiento
+          const sampleLength = Math.min(channelData.length, 44100 * 30);
+          const samples = channelData.slice(0, sampleLength);
+  
+          // 1. Calcular RMS (energía promedio)
+          let sumSquares = 0;
+          for (let i = 0; i < samples.length; i++) {
+              sumSquares += samples[i] * samples[i];
+          }
+          const rms = Math.sqrt(sumSquares / samples.length);
+  
+          // 2. Calcular Zero-Crossing Rate (ZCR) - indica rugosidad/percusión
+          let zeroCrossings = 0;
+          for (let i = 1; i < samples.length; i++) {
+              if ((samples[i - 1] >= 0 && samples[i] < 0) || (samples[i - 1] < 0 && samples[i] >= 0)) {
+                  zeroCrossings++;
+              }
+          }
+          const zcr = zeroCrossings / samples.length;
+  
+          // 3. Calcular varianza de la energía (dinámicas)
+          const windowSize = 4410; // 0.1 segundos
+          const energyWindows = [];
+          for (let i = 0; i < samples.length - windowSize; i += windowSize) {
+              let windowEnergy = 0;
+              for (let j = i; j < i + windowSize; j++) {
+                  windowEnergy += samples[j] * samples[j];
+              }
+              energyWindows.push(Math.sqrt(windowEnergy / windowSize));
+          }
+          
+          const meanEnergy = energyWindows.reduce((a, b) => a + b, 0) / energyWindows.length;
+          const energyVariance = energyWindows.reduce((sum, energy) => sum + Math.pow(energy - meanEnergy, 2), 0) / energyWindows.length;
 
-    setSongs(prevSongs => [...prevSongs, ...newSongs]);
+          // 3b. Estimar BPM mediante autocorrelación del envolvente de energía
+          const windowRate = 44100 / windowSize; // ~10 Hz (ventanas por segundo)
+          const minLag = 3;   // ~200 BPM
+          const maxLag = 20;  // ~60 BPM
+          let bestLag = 0;
+          let bestCorr = -Infinity;
+          for (let lag = minLag; lag <= maxLag; lag++) {
+              let sum = 0;
+              for (let i = 0; i < energyWindows.length - lag; i++) {
+                  sum += energyWindows[i] * energyWindows[i + lag];
+              }
+              if (sum > bestCorr) {
+                  bestCorr = sum;
+                  bestLag = lag;
+              }
+          }
+          const bpm = bestLag > 0 ? Math.round((60 * windowRate) / bestLag) : 0;
+
+          // 3c. Tasa de onsets (incrementos de energía)
+          const energyStd = Math.sqrt(energyVariance);
+          const onsetThreshold = Math.max(0.01, 0.5 * energyStd);
+          let onsets = 0;
+          for (let i = 1; i < energyWindows.length; i++) {
+              if (energyWindows[i] - energyWindows[i - 1] > onsetThreshold) {
+                  onsets++;
+              }
+          }
+          const durationSec = energyWindows.length / windowRate;
+          const onsetPerSec = durationSec > 0 ? onsets / durationSec : 0;
+
+          // 3d. Ratio de silencio
+          const silenceThreshold = Math.max(0.005, meanEnergy * 0.5);
+          const silentWindows = energyWindows.filter(e => e < silenceThreshold).length;
+          const silenceRatio = energyWindows.length > 0 ? silentWindows / energyWindows.length : 0;
+  
+          // 4. Análisis de frecuencias (aproximado usando autocorrelación)
+          let lowFreqEnergy = 0;
+          let midFreqEnergy = 0;
+          let highFreqEnergy = 0;
+          
+          const segmentSize = Math.floor(samples.length / 3);
+          for (let i = 0; i < segmentSize; i++) {
+              lowFreqEnergy += Math.abs(samples[i]);
+          }
+          for (let i = segmentSize; i < segmentSize * 2; i++) {
+              midFreqEnergy += Math.abs(samples[i]);
+          }
+          for (let i = segmentSize * 2; i < samples.length; i++) {
+              highFreqEnergy += Math.abs(samples[i]);
+          }
+          
+          lowFreqEnergy /= segmentSize;
+          midFreqEnergy /= segmentSize;
+          highFreqEnergy /= segmentSize;
+  
+          // 5. Clasificación mejorada con múltiples características
+          let mood = 'relajado';
+
+          // Energético: BPM alto, muchos onsets, alta energía y ZCR
+          if (bpm >= 120 && onsetPerSec > 1.0 && rms > 0.045 && zcr > 0.035) {
+              mood = 'energico';
+          }
+          // Feliz: BPM medio-alto, frecuencias medias dominantes, varianza moderada
+          else if (bpm >= 95 && bpm <= 140 && midFreqEnergy > lowFreqEnergy && energyVariance > 0.0005 && zcr >= 0.02 && zcr <= 0.05) {
+              mood = 'feliz';
+          }
+          // Triste: BPM bajo, baja energía, graves dominantes, pocos onsets y ZCR bajo
+          else if (bpm < 85 && rms < 0.04 && lowFreqEnergy > midFreqEnergy && onsetPerSec < 0.5 && zcr < 0.03) {
+              mood = 'triste';
+          }
+          // Melancólico: BPM muy bajo, energía y varianza muy bajas, mucho silencio
+          else if (bpm < 70 && rms < 0.03 && energyVariance < 0.0006 && silenceRatio > 0.15) {
+              mood = 'melancolico';
+          }
+          // Relajado: BPM medio, energía moderada, varianza baja, frecuencias equilibradas
+          else if (bpm >= 70 && bpm <= 110 && rms >= 0.025 && rms <= 0.05 && energyVariance < 0.0009) {
+              mood = 'relajado';
+          }
+          // Si no encaja en ninguna categoría específica, usar energía como criterio principal
+          else if (rms > 0.06) {
+              mood = 'energico';
+          } else if (rms < 0.02) {
+              mood = 'melancolico';
+          }
+  
+          console.log(`Análisis de "${file.name}": BPM=${bpm}, Onsets/s=${onsetPerSec.toFixed(2)}, Silencio=${(silenceRatio*100).toFixed(1)}%, RMS=${rms.toFixed(4)}, ZCR=${zcr.toFixed(6)}, Varianza=${energyVariance.toFixed(6)}, Mood=${mood}`);
+          
+          return { 
+              mood, 
+              rms, 
+              zcr, 
+              energyVariance,
+              bpm,
+              onsetPerSec,
+              silenceRatio,
+              lowFreqEnergy,
+              midFreqEnergy,
+              highFreqEnergy
+          };
+      } catch (e) {
+          console.error('Error analizando canción:', e);
+          return { mood: 'relajado', rms: 0, zcr: 0 };
+      }
+  }
+
+  // --- Umbrales dinámicos y recategorización por percentiles (para reducir sesgo) ---
+  const computePercentiles = (arr) => {
+    if (!arr || arr.length === 0) return { p20: 0, p40: 0, p60: 0, p80: 0 };
+    const sorted = [...arr].sort((a, b) => a - b);
+    const idx = (p) => Math.min(sorted.length - 1, Math.max(0, Math.floor((p / 100) * sorted.length)));
+    return {
+      p20: sorted[idx(20)],
+      p40: sorted[idx(40)],
+      p60: sorted[idx(60)],
+      p80: sorted[idx(80)],
+    };
+  };
+
+  const recategorizeSongsDynamically = (allSongs) => {
+    const userSongs = allSongs.filter(s => s.name === 'Local Frvttae' && s._analysis);
+    if (userSongs.length === 0) return allSongs;
+
+    const metrics = {
+      bpm: userSongs.map(s => s._analysis.bpm || 0),
+      onsets: userSongs.map(s => s._analysis.onsetPerSec || 0),
+      rms: userSongs.map(s => s._analysis.rms || 0),
+      zcr: userSongs.map(s => s._analysis.zcr || 0),
+      variance: userSongs.map(s => s._analysis.energyVariance || 0),
+      silence: userSongs.map(s => s._analysis.silenceRatio || 0),
+      low: userSongs.map(s => s._analysis.lowFreqEnergy || 0),
+      mid: userSongs.map(s => s._analysis.midFreqEnergy || 0),
+      high: userSongs.map(s => s._analysis.highFreqEnergy || 0),
+    };
+
+    const P = {
+      bpm: computePercentiles(metrics.bpm),
+      onsets: computePercentiles(metrics.onsets),
+      rms: computePercentiles(metrics.rms),
+      zcr: computePercentiles(metrics.zcr),
+      variance: computePercentiles(metrics.variance),
+      silence: computePercentiles(metrics.silence),
+      low: computePercentiles(metrics.low),
+      mid: computePercentiles(metrics.mid),
+      high: computePercentiles(metrics.high),
+    };
+
+    const classify = (a) => {
+      const bpm = a.bpm || 0;
+      const onsets = a.onsetPerSec || 0;
+      const rms = a.rms || 0;
+      const zcr = a.zcr || 0;
+      const variance = a.energyVariance || 0;
+      const silence = a.silenceRatio || 0;
+      const low = a.lowFreqEnergy || 0;
+      const mid = a.midFreqEnergy || 0;
+      const high = a.highFreqEnergy || 0;
+
+      if (bpm >= P.bpm.p80 && onsets >= P.onsets.p80 && rms >= P.rms.p80 && zcr >= P.zcr.p60) return 'energico';
+      if (bpm >= P.bpm.p60 && bpm <= P.bpm.p80 && mid >= P.mid.p60 && variance >= P.variance.p60 && zcr >= P.zcr.p40 && zcr <= P.zcr.p70) return 'feliz';
+      if (bpm <= P.bpm.p40 && rms <= P.rms.p40 && low >= P.low.p60 && onsets <= P.onsets.p40 && zcr <= P.zcr.p40) return 'triste';
+      if (bpm <= P.bpm.p20 && rms <= P.rms.p20 && silence >= P.silence.p80 && variance <= P.variance.p20 && zcr <= P.zcr.p20) return 'melancolico';
+      if (bpm >= P.bpm.p40 && bpm <= P.bpm.p60 && rms >= P.rms.p40 && rms <= P.rms.p60 && variance <= P.variance.p40) return 'relajado';
+      if (bpm >= P.bpm.p70 || rms >= P.rms.p70) return 'energico';
+      if (bpm <= P.bpm.p30 || rms <= P.rms.p30) return silence >= P.silence.p60 ? 'melancolico' : 'triste';
+      return mid >= low ? 'feliz' : 'relajado';
+    };
+
+    return allSongs.map(s => {
+      if (s.name === 'Local Frvttae' && s._analysis) {
+        const newMood = classify(s._analysis);
+        return { ...s, mood: newMood };
+      }
+      return s;
+    });
+  };
+
+  const handleMusicUpload = async (e) => {
+      const files = Array.from(e.target.files);
+      const analyzedSongsPromises = files.map(async (file) => {
+          // Guardar blob en IndexedDB y usar ObjectURL para reproducción
+          const arcName = file.name.replace(/\.[^/.]+$/, "");
+          const analysis = await analyzeSongMood(file);
+          const id = `${Date.now()}_${arcName}_${Math.random().toString(36).slice(2,8)}`;
+          try {
+            await saveAudio(id, file);
+          } catch (err) {
+            console.error('Error guardando audio en IndexedDB:', err);
+          }
+          const url = URL.createObjectURL(file);
+          return {
+              title: arcName,
+              name: 'Local Frvttae',
+              from: url,
+              type: file.type,
+              id,
+              mood: analysis.mood,
+              _analysis: analysis
+          };
+      });
+
+      const analyzedSongs = await Promise.all(analyzedSongsPromises);
+      const merged = [...songs, ...analyzedSongs];
+      const categorizedUpload = recategorizeSongsDynamically(merged);
+      setSongs(categorizedUpload);
   };
 
   const handleBackgroundChange = (e) => {
@@ -249,10 +559,22 @@ function App() {
   };
 
   const handleMoodSongSelect = (recommendedSongs) => {
-    setSongs(recommendedSongs);
-    setActualSong(0);
+    // Activar filtro en playlist por emoción seleccionada
+    const mood = (recommendedSongs && recommendedSongs[0] && (recommendedSongs[0].mood || '').toLowerCase()) || null;
+    setFilterMood(mood);
     setIsPlaying(true);
     setShowMoodRecommender(false);
+
+    // Posicionar el reproductor en la primera recomendada dentro de la lista global
+    const firstRecommendedIndex = songs.findIndex(song => 
+      recommendedSongs.some(rec => 
+        (rec.id && song.id === rec.id) ||
+        (rec.title === song.title && rec.name === song.name && rec.from === song.from)
+      )
+    );
+    if (firstRecommendedIndex !== -1) {
+      setActualSong(firstRecommendedIndex);
+    }
   };
 
   return (
@@ -280,7 +602,7 @@ function App() {
 
       {showMoodRecommender && (
         <div className="mood-recommender-container">
-          <MoodRecommender onSelectSongs={handleMoodSongSelect} />
+          <MoodRecommender sourceSongs={songs} onSelectSongs={handleMoodSongSelect} />
         </div>
       )}
 
@@ -298,17 +620,26 @@ function App() {
       )}
 
       <div className="playlist">
-        <h2>Playlist</h2>
+        <h2>Playlist {filterMood ? `(filtrado: ${filterMood})` : ''}</h2>
+        {filterMood && (
+          <button className="clear-filter" onClick={() => setFilterMood(null)}>Mostrar todo</button>
+        )}
         <ul id="playlist-container">
-          {songs.map((song, index) => (
-            <li 
-              key={index} 
-              className={index === actualSong ? 'active' : ''}
-              onClick={() => handleSongSelect(index)}
-            >
-              {song.title} - {song.name}
-            </li>
-          ))}
+          {(filterMood ? songs.filter(s => (s.mood || '').toLowerCase() === filterMood) : songs).map((song, idx) => {
+            const globalIndex = songs.findIndex(s => 
+              (song.id && s.id === song.id) || 
+              (s.title === song.title && s.name === song.name && s.from === song.from)
+            );
+            return (
+              <li 
+                key={globalIndex !== -1 ? globalIndex : idx} 
+                className={globalIndex === actualSong ? 'active' : ''}
+                onClick={() => handleSongSelect(globalIndex !== -1 ? globalIndex : idx)}
+              >
+                {song.title} - {song.name}
+              </li>
+            );
+          })}
         </ul>
       </div>
       
