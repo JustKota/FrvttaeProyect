@@ -7835,3 +7835,17 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2025-11-19 14:48:26,586 - main - INFO - Verificando conexión a MongoDB...
 2025-11-19 14:48:27,184 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 598.24ms
 2025-11-19 14:48:27,279 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 599.24ms
+2025-11-24 19:28:43,088 - main - INFO - === INICIANDO APLICACIÓN DE LOGIN FACIAL ===
+2025-11-24 19:28:58,737 - main - INFO - Configurando CORS con los siguientes orígenes: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:3000']
+2025-11-24 19:28:58,836 - main - INFO - Inicializando conexión a MongoDB...
+2025-11-24 19:28:58,837 - database - INFO - Intentando conectar a MongoDB: mongodb+srv://[credenciales]@cluster0.o0c70at.mongodb.net/
+2025-11-24 19:29:08,786 - database - INFO - Conexión exitosa a MongoDB - Base de datos: face_login_db
+2025-11-24 19:29:08,891 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 95.00ms
+2025-11-24 19:29:08,893 - main - INFO - Conexión a MongoDB inicializada correctamente
+2025-11-24 19:29:09,405 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 614.26ms
+2025-11-24 19:29:50,933 - main - INFO - Verificando conexión a MongoDB...
+2025-11-24 19:29:51,026 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 90.02ms
+2025-11-24 19:29:51,138 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 94.03ms
+2025-11-24 19:29:51,226 - main - INFO - Verificando conexión a MongoDB...
+2025-11-24 19:29:51,327 - database - INFO - Verificación de conexión exitosa. Tiempo de respuesta: 89.76ms
+2025-11-24 19:29:51,421 - main - INFO - Verificación de conexión a MongoDB exitosa. Tiempo de respuesta: 90.77ms
